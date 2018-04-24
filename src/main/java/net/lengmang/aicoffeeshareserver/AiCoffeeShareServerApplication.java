@@ -19,7 +19,8 @@ public class AiCoffeeShareServerApplication {
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
             super.addInterceptors(registry);
-            registry.addInterceptor(new UserLoginInterceptor());
+            //校验对API数据库操作用户的登录状态
+            registry.addInterceptor(new UserLoginInterceptor()).addPathPatterns("/api/**");
         }
     }
 }

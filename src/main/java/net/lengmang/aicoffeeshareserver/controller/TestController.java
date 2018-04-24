@@ -23,7 +23,7 @@ public class TestController {
 
     @GetMapping("/testModel")
     public String testByModel(Model model) {
-        model.addAttribute("data", "testData Model");
+        model.addAttribute("data", "{\"1\":1,\"1\":1,\"1\":1}");
         return "test";
     }
 
