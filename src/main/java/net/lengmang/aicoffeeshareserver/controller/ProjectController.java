@@ -5,13 +5,15 @@ import com.google.gson.JsonParser;
 import net.lengmang.aicoffeeshareserver.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.util.Enumeration;
+import java.util.UUID;
 
 @Controller
 public class ProjectController {
@@ -22,68 +24,92 @@ public class ProjectController {
     private String appSecret;
 
     /**
-     * 配置通用路径
+     * 获取用户基本信息
+     * 需要前端POST code过来
      */
-    @GetMapping("/*")
-    public String weChatLogin(HttpServletRequest request, HttpServletResponse response, Model model) {
-        try {
-            Enumeration<String> enumeration = request.getParameterNames();
-            if (enumeration.hasMoreElements()) {
-                String state = request.getParameter("state");
-                String code = request.getParameter("code");
-                //获取access_token
-                String getAccessTokenByCodeLink = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                        "appid=" + appId + "&" +
-                        "secret=" + appSecret + "&" +
-                        "code=" + code + "&" +
-                        "grant_type=authorization_code";
-                String accessTokenByCodeLinkResult = HttpUtil.doGet(getAccessTokenByCodeLink);
-                JsonObject getAccessTokenByCodeJson = new JsonParser().parse(accessTokenByCodeLinkResult).getAsJsonObject();
-                String refresh_token = getAccessTokenByCodeJson.get("refresh_token").toString().replaceAll("\"", "");
-                System.out.println("====================================================================");
-                System.out.println(getAccessTokenByCodeJson);
-                System.out.println("====================================================================");
-                //获取refresh_token
-                String getRefreshTokenByRefreshTokenLink = "https://api.weixin.qq.com/sns/oauth2/refresh_token?" +
-                        "appid=" + appId + "&" +
-                        "grant_type=refresh_token&" +
-                        "refresh_token=" + refresh_token;
-                String refreshTokenByRefreshTokenResult = HttpUtil.doGet(getRefreshTokenByRefreshTokenLink);
-                JsonObject refreshTokenByRefreshTokenJson = new JsonParser().parse(refreshTokenByRefreshTokenResult).getAsJsonObject();
-                String access_token = refreshTokenByRefreshTokenJson.get("access_token").toString().replaceAll("\"", "");
-                String openid = refreshTokenByRefreshTokenJson.get("openid").toString().replaceAll("\"", "");
-                //获取用户信息
-                String userInfoLink = "https://api.weixin.qq.com/sns/userinfo?" +
-                        "access_token=" + access_token + "&" +
-                        "openid=" + openid;
-                String userInfoLinkResult = HttpUtil.doGet(userInfoLink);
-                JsonObject userInfoLinkJson = new JsonParser().parse(userInfoLinkResult).getAsJsonObject();
-                System.out.println("====================================================================");
-                System.out.println(userInfoLinkJson);
-                System.out.println("====================================================================");
-                model.addAttribute("userInfo", userInfoLinkJson.toString());
-                return "main";
-            } else {
-                String link = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
-                        "appid=" + appId + "&" +
-                        "redirect_uri=" + URLEncoder.encode(request.getRequestURL().toString(), "utf-8") + "&" +
-                        "response_type=code&" +
-                        "scope=snsapi_userinfo&" +
-                        "#wechat_redirect";
-                response.sendRedirect(link);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    @ResponseBody
+    @PostMapping("/getBaseInfo")
+    public Object weChatLogin(HttpServletRequest request) {
+        String code = request.getParameter("code");
+        //获取access_token
+        String getAccessTokenByCodeLink = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
+                "appid=" + appId + "&" +
+                "secret=" + appSecret + "&" +
+                "code=" + code + "&" +
+                "grant_type=authorization_code";
+        String accessTokenByCodeLinkResult = HttpUtil.doGet(getAccessTokenByCodeLink);
+        JsonObject getAccessTokenByCodeJson = new JsonParser().parse(accessTokenByCodeLinkResult).getAsJsonObject();
+        String refresh_token = getAccessTokenByCodeJson.get("refresh_token").toString().replaceAll("\"", "");
+        System.out.println("====================================================================");
+        System.out.println(getAccessTokenByCodeJson);
+        System.out.println("====================================================================");
+        //获取refresh_token
+        String getRefreshTokenByRefreshTokenLink = "https://api.weixin.qq.com/sns/oauth2/refresh_token?" +
+                "appid=" + appId + "&" +
+                "grant_type=refresh_token&" +
+                "refresh_token=" + refresh_token;
+        String refreshTokenByRefreshTokenResult = HttpUtil.doGet(getRefreshTokenByRefreshTokenLink);
+        JsonObject refreshTokenByRefreshTokenJson = new JsonParser().parse(refreshTokenByRefreshTokenResult).getAsJsonObject();
+        String access_token = refreshTokenByRefreshTokenJson.get("access_token").toString().replaceAll("\"", "");
+        String openid = refreshTokenByRefreshTokenJson.get("openid").toString().replaceAll("\"", "");
+        //获取用户信息
+        String userInfoLink = "https://api.weixin.qq.com/sns/userinfo?" +
+                "access_token=" + access_token + "&" +
+                "openid=" + openid;
+        String userInfoLinkResult = HttpUtil.doGet(userInfoLink);
+        JsonObject userInfoLinkJson = new JsonParser().parse(userInfoLinkResult).getAsJsonObject();
+        System.out.println("====================================================================");
+        System.out.println(userInfoLinkJson);
+        System.out.println("====================================================================");
+        return userInfoLinkJson.toString();
     }
 
     /**
-     * Api路径
+     * 重定向路径
      */
-    @GetMapping("/api/**")
-    public String api() {
-        System.out.println("api被使用了");
-        return "test";
+    @GetMapping("/*")
+    public String redirectPath(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            System.out.println("wechat登录被使用了");
+            Enumeration<String> enumeration = request.getParameterNames();
+            String uuid = "";
+            //如果没有code和state，则需要去微信认证登录
+            if (!enumeration.hasMoreElements()) {
+                uuid = UUID.randomUUID().toString();
+                request.getSession().setAttribute(uuid, uuid);
+                String url = request.getRequestURL().toString();
+                String link = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                        "appid=" + appId + "&" +
+                        "redirect_uri=" + URLEncoder.encode(url, "utf-8") + "&" +
+                        "response_type=code&" +
+                        "scope=snsapi_userinfo&" +
+                        "state=" + uuid + "&" +
+                        "#wechat_redirect";
+                response.sendRedirect(link);
+                return "";
+            } else {
+                String state = request.getParameter("state");
+                if (request.getSession().getAttribute(state) != null) {
+                    if (request.getSession().getAttribute(state).equals(state)) {
+                        request.getSession().removeAttribute(state);
+                        return "index";
+                    }
+                }
+                uuid = UUID.randomUUID().toString();
+                request.getSession().setAttribute(uuid, uuid);
+                String url = request.getRequestURL().toString();
+                String link = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                        "appid=" + appId + "&" +
+                        "redirect_uri=" + URLEncoder.encode(url, "utf-8") + "&" +
+                        "response_type=code&" +
+                        "scope=snsapi_userinfo&" +
+                        "state=" + uuid + "&" +
+                        "#wechat_redirect";
+                response.sendRedirect(link);
+                return "";
+            }
+        } catch (Exception e) {
+            return "";
+        }
     }
 }
