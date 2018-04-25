@@ -33,7 +33,8 @@ public class WeChatController {
     @ResponseBody
     @RequestMapping(value = "/WeChat", method = RequestMethod.POST)
     public String WeChatData(@RequestBody String xml) {
-
+        System.out.println("（づ￣3￣）づ╭❤～");
+        System.out.println(xml);
         return "0.0";
     }
 }
