@@ -2,6 +2,7 @@ package net.lengmang.aicoffeeshareserver.controller;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.lengmang.aicoffeeshareserver.bean.ReturnData;
 import net.lengmang.aicoffeeshareserver.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ public class ProjectController {
      */
     @ResponseBody
     @PostMapping("/getBaseInfo")
-    public Object weChatLogin(HttpServletRequest request) {
+    public String weChatLogin(HttpServletRequest request) {
         String code = request.getParameter("code");
         //获取access_token
         String getAccessTokenByCodeLink = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
@@ -61,7 +62,7 @@ public class ProjectController {
         System.out.println("====================================================================");
         System.out.println(userInfoLinkJson);
         System.out.println("====================================================================");
-        return userInfoLinkJson.toString();
+        return new ReturnData(0, userInfoLinkJson).toString();
     }
 
     /**
