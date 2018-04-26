@@ -18,11 +18,15 @@ public class Test2Controller {
     @Value("${appSecret}")
     private String appSecret;
 
-//    @GetMapping("/test2")
-//    public String test(HttpServletRequest request) {
-//        System.out.println(request.getRequestURL());
-//        return appID + "\n" + appSecret;
-//    }
+    @Value("${staticImgPath}")
+    private String staticImgPath;
+
+    @ResponseBody
+    @GetMapping("/test2")
+    public String test(HttpServletRequest request) {
+        System.out.println(request.getRequestURL());
+        return staticImgPath;
+    }
 
     @ResponseBody
     @GetMapping("/test3")
