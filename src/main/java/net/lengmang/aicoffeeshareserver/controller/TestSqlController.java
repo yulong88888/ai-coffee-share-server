@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -66,5 +67,29 @@ public class TestSqlController {
     @GetMapping(value = "/deleteProduct/{id}")
     public void deleteProduct(@PathVariable("id") Integer id) {
         productRepository.deleteById(id);
+    }
+
+    /**
+     * 查询产品分组
+     */
+    @GetMapping(value = "/getProductItem")
+    public List<String> getProductItem() {
+        List<Product> products = productRepository.findAll();
+        List<String> result = new ArrayList<String>();
+        for (Product product : products) {
+            String temp = product.getItem();
+            if (!result.contains(temp)) {
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 按分组名称查询商品
+     */
+    @GetMapping(value = "/getProductByItem")
+    public List<Product> getProductByItem() {
+        return productRepository.readByItem("item");
     }
 }
