@@ -23,6 +23,8 @@ public class ProjectController {
     private String appId;
     @Value("${appSecret}")
     private String appSecret;
+    @Value("${isDev}")
+    private boolean isDev;
 
     /**
      * 获取用户基本信息
@@ -70,6 +72,9 @@ public class ProjectController {
      */
     @GetMapping("/*")
     public String redirectPath(HttpServletRequest request, HttpServletResponse response) {
+        if (isDev) {
+            return "index";
+        }
         try {
             System.out.println("wechat登录被使用了");
             Enumeration<String> enumeration = request.getParameterNames();
