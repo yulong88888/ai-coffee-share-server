@@ -1,4 +1,4 @@
-package net.lengmang.aicoffeeshareserver.DaoBean;
+package net.lengmang.aicoffeeshareserver.sql.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
