@@ -92,7 +92,7 @@ public class ProjectController {
                         "state=" + uuid + "&" +
                         "#wechat_redirect";
                 response.sendRedirect(link);
-                return "";
+                return null;
             } else {
                 String state = request.getParameter("state");
                 if (request.getSession().getAttribute(state) != null) {
@@ -112,10 +112,10 @@ public class ProjectController {
                         "state=" + uuid + "&" +
                         "#wechat_redirect";
                 response.sendRedirect(link);
-                return "";
+                return null;
             }
         } catch (Exception e) {
-            return "";
+            return null;
         }
     }
 }

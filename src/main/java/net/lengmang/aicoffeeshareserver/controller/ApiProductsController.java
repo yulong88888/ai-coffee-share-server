@@ -6,11 +6,11 @@ import net.lengmang.aicoffeeshareserver.sql.bean.Product;
 import net.lengmang.aicoffeeshareserver.sql.repository.ProductRepository;
 import net.lengmang.aicoffeeshareserver.utils.ProductsManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -23,8 +23,8 @@ public class ApiProductsController {
      * Api路径
      */
     @ResponseBody
-    @PostMapping("/api/product/add")
-    public String addProduct(@RequestParam Product product) {
+    @PostMapping(value = "/api/product/add")
+    public String addProduct(@RequestBody Product product) {
         JsonObject jsonObject = new JsonObject();
         try {
             //获取产品数据
@@ -36,8 +36,10 @@ public class ApiProductsController {
             }
             productRepository.save(product);
             jsonObject.addProperty("msg", "添加成功");
+            ProductsManager.clearProducts();
             return new ReturnData(0, jsonObject).toString();
         } catch (Exception e) {
+            e.printStackTrace();
             jsonObject.addProperty("msg", "服务器出错");
             return new ReturnData(1, jsonObject).toString();
         }

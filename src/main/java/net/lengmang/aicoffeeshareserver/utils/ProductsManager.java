@@ -3,7 +3,9 @@ package net.lengmang.aicoffeeshareserver.utils;
 import net.lengmang.aicoffeeshareserver.sql.bean.Product;
 import net.lengmang.aicoffeeshareserver.sql.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ import java.util.List;
  * 缓解每一次查询对数据库IO的压力
  * 注意：管理员从后台修改完任何产品信息，都要清空一次这个内存对象，并不会清空数据库数据
  */
+@Component
 public class ProductsManager {
 
     private static ProductsManager productsManager = null;
@@ -20,7 +23,14 @@ public class ProductsManager {
 
     private List<Product> products;
 
-    public ProductsManager() {
+    @PostConstruct
+    private void init() {
+        productsManager = this;
+        productsManager.productRepository = productRepository;
+    }
+
+
+    private ProductsManager() {
     }
 
     /**
@@ -28,7 +38,7 @@ public class ProductsManager {
      */
     private List<Product> get() {
         if (products == null) {
-            products = productRepository.findAll();
+            products = this.productRepository.findAll();
         }
         return products;
     }
