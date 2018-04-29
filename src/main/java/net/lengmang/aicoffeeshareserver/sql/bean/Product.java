@@ -22,6 +22,23 @@ public class Product {
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Product) {
+            Product product = (Product) obj;
+            if (this.name.equals(product.getName()) &&
+                    this.item.equals(product.getItem()) &&
+                    this.price == (product.getPrice()) &&
+                    this.description.equals(product.getDescription()) &&
+                    this.info.equals(product.getInfo()) &&
+                    this.iconLink.equals(product.getIconLink()) &&
+                    this.imageLink.equals(product.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -29,6 +29,7 @@ public class ApiProductsController {
         try {
             //获取产品数据
             List<Product> products = ProductsManager.getProducts();
+            //对象中的equal方法方便给list的contains使用，没有比较ID
             //判断新产品数据是否有重复
             if (products.contains(product)) {
                 jsonObject.addProperty("msg", "已经添加过的产品");
