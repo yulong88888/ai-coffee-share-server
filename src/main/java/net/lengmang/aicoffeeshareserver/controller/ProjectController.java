@@ -31,7 +31,7 @@ public class ProjectController {
      * 需要前端POST code过来
      */
     @ResponseBody
-    @PostMapping("/getBaseInfo")
+    @PostMapping("/getUserBaseInfo")
     public String weChatLogin(HttpServletRequest request) {
         String code = request.getParameter("code");
         //获取access_token

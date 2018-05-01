@@ -1,16 +1,27 @@
 package net.lengmang.aicoffeeshareserver.utils;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileOutputStream;
 
+@Component
 public class FileUploader {
 
+    private static FileUploader fileUploader = null;
+
+    @Value("${isDev}")
     private boolean isDev;
 
-    private FileUploader(boolean isDev) {
-        this.isDev = isDev;
+    private FileUploader() {
+    }
+
+    @PostConstruct
+    private void init() {
+        fileUploader = this;
+        fileUploader.isDev = isDev;
     }
 
     private void upload(byte[] file, String fileName) throws Exception {
@@ -23,6 +34,13 @@ public class FileUploader {
         out.write(file);
         out.flush();
         out.close();
+    }
+
+    private void delFile(String fileName) {
+        File file = new File(getFilePath() + "/" + fileName);
+        if (file.exists() && file.isFile()) {
+            file.delete();
+        }
     }
 
     private String getFilePath() {
@@ -38,12 +56,17 @@ public class FileUploader {
         return resultPath;
     }
 
-    private static FileUploader fileUploader = null;
-
-    public static void uploadFile(byte[] file, String fileName, boolean isDev) throws Exception {
+    public static void uploadFile(byte[] file, String fileName) throws Exception {
         if (fileUploader == null) {
-            fileUploader = new FileUploader(isDev);
+            fileUploader = new FileUploader();
         }
         fileUploader.upload(file, fileName);
+    }
+
+    public static void deleteFile(String needDelIconFile) {
+        if (fileUploader == null) {
+            fileUploader = new FileUploader();
+        }
+        fileUploader.delFile(needDelIconFile);
     }
 }

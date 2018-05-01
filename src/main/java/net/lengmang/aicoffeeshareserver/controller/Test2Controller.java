@@ -21,9 +21,6 @@ public class Test2Controller {
 //    @Value("${staticImgPath}")
 //    private String staticImgPath;
 
-    @Value("${isDev}")
-    private boolean isDev;
-
 //    @ResponseBody
 //    @GetMapping("/test2")
 //    public String test(HttpServletRequest request) {
@@ -49,12 +46,6 @@ public class Test2Controller {
         //return path + "============" + path2;
     }
 
-    @ResponseBody
-    @GetMapping("/test5")
-    public boolean test5() {
-        return isDev;
-    }
-
     @GetMapping("/upload")
     public String upload() {
         return "upload";
@@ -68,7 +59,7 @@ public class Test2Controller {
             String fileName = file.getOriginalFilename();
             System.out.println("fileName-->" + fileName);
             System.out.println("getContentType-->" + contentType);
-            FileUploader.uploadFile(file.getBytes(), fileName, isDev);
+            FileUploader.uploadFile(file.getBytes(), fileName);
             return "ok";
         } catch (Exception e) {
             e.printStackTrace();

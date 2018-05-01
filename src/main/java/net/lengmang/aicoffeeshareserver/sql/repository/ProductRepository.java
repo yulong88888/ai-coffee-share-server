@@ -8,4 +8,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     public List<Product> readByItem(String item);
+
+    public Product readByNameId(String id);
 }

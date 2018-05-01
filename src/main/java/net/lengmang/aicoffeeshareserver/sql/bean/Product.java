@@ -11,6 +11,7 @@ public class Product {
     @GeneratedValue
     private Integer id;
     private String name;
+    private String nameId;
     private String item;
     private double price;
     private String description;
@@ -27,6 +28,7 @@ public class Product {
         if (obj instanceof Product) {
             Product product = (Product) obj;
             if (this.name.equals(product.getName()) &&
+                    this.name.equals(product.getNameId()) &&
                     this.item.equals(product.getItem()) &&
                     this.price == (product.getPrice()) &&
                     this.description.equals(product.getDescription()) &&
@@ -53,6 +55,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNameId() {
+        return nameId;
+    }
+
+    public void setNameId(String nameId) {
+        this.nameId = nameId;
     }
 
     public String getItem() {
