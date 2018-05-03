@@ -51,7 +51,7 @@ public class FileUploader {
             int flag = basePath.lastIndexOf("\\");
             basePath = basePath.substring(0, flag) + "\\webapps\\";
         }
-        String resultPath = basePath + "ai-coffee-share-static-resources\\";
+        String resultPath = "../" + basePath + "ai-coffee-share-static-resources\\";
         System.out.println(resultPath);
         return resultPath;
     }
