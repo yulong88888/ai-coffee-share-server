@@ -99,7 +99,7 @@ public class ApiProductController {
     }
 
     /**
-     * 查询产品修改路径
+     * 查询产品路径
      */
     @ResponseBody
     @GetMapping(value = "/api/product/get")
