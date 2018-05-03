@@ -14,10 +14,14 @@ import java.util.Enumeration;
 @Component
 public class UserLoginInterceptor implements HandlerInterceptor {
 
-    @Value("${appID}")
-    private String appId;
+    private static String appId;
 
     private static boolean isDev;
+
+    @Value("${appID}")
+    private void setAppId(String appId) {
+        this.appId = appId;
+    }
 
     @Value("${isDev}")
     private void setMode(boolean isDev) {
@@ -35,8 +39,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
         if (enumeration.hasMoreElements()) {
             String openId = request.getParameter("openId");
             if (openId != null || !openId.equals("")) {
-                Object loginInfo = request.getSession().getAttribute(openId);
-                if (loginInfo == null) {
+                if (!request.getSession().getAttribute(openId).equals(openId)) {
                     String link = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
                             "appid=" + appId + "&" +
                             "redirect_uri=" + URLEncoder.encode(request.getRequestURL().toString(), "utf-8") + "&" +

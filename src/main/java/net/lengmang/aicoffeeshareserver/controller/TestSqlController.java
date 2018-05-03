@@ -37,8 +37,8 @@ public class TestSqlController {
         product.setPrice(66);
         product.setDescription("description");
         product.setInfo("info");
-        product.setIconLink("iconLink");
-        product.setImageLink("imageLink");
+        product.setIcon("iconLink");
+        product.setImage("imageLink");
         return productRepository.save(product);
     }
 

@@ -1,16 +1,17 @@
 package net.lengmang.aicoffeeshareserver.bean;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class ReturnData {
 
     private int code;
-    private JsonObject recdata;
+    private Object recdata;
 
-    public ReturnData(int code, JsonObject jsonObject) {
+    public ReturnData(int code, Object object) {
         this.code = code;
-        this.recdata = jsonObject;
+        this.recdata = object;
     }
 
     @Override

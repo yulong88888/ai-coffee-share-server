@@ -16,8 +16,8 @@ public class Product {
     private double price;
     private String description;
     private String info;
-    private String iconLink;
-    private String imageLink;
+    private String icon;
+    private String image;
 
     public Product() {
 
@@ -28,13 +28,13 @@ public class Product {
         if (obj instanceof Product) {
             Product product = (Product) obj;
             if (this.name.equals(product.getName()) &&
-                    this.name.equals(product.getNameId()) &&
+                    this.nameId.equals(product.getNameId()) &&
                     this.item.equals(product.getItem()) &&
                     this.price == (product.getPrice()) &&
                     this.description.equals(product.getDescription()) &&
                     this.info.equals(product.getInfo()) &&
-                    this.iconLink.equals(product.getIconLink()) &&
-                    this.imageLink.equals(product.getName())) {
+                    this.icon.equals(product.getIcon()) &&
+                    this.image.equals(product.getName())) {
                 return true;
             }
         }
@@ -97,19 +97,19 @@ public class Product {
         this.info = info;
     }
 
-    public String getIconLink() {
-        return iconLink;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setIconLink(String iconLink) {
-        this.iconLink = iconLink;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

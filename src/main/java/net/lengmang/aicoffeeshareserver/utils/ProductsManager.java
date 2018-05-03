@@ -41,7 +41,7 @@ public class ProductsManager {
      * 获取数据库的产品信息
      */
     private List<Product> get() {
-        if (products == null) {
+        if (products == null || products.size() == 0) {
             products = this.productRepository.findAll();
         }
         return products;

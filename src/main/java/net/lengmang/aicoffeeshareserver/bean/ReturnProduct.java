@@ -10,7 +10,7 @@ import java.util.List;
 public class ReturnProduct {
 
     private String name;
-    private List<Product> products;
+    private List<Product> product;
 
     public String getName() {
         return name;
@@ -21,11 +21,11 @@ public class ReturnProduct {
     }
 
     public List<Product> getProducts() {
-        return products;
+        return product;
     }
 
     public void setProducts(List<Product> products) {
-        this.products = products;
+        this.product = products;
     }
 
 //    @Override

@@ -5,13 +5,11 @@ import net.lengmang.aicoffeeshareserver.bean.ReturnData;
 import net.lengmang.aicoffeeshareserver.sql.bean.Product;
 import net.lengmang.aicoffeeshareserver.sql.repository.ProductRepository;
 import net.lengmang.aicoffeeshareserver.utils.FileUploader;
-import net.lengmang.aicoffeeshareserver.utils.ProductsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 public class ApiFileUploadController {
@@ -32,14 +30,14 @@ public class ApiFileUploadController {
                 fileName = "image_" + fileName;
                 FileUploader.uploadFile(file.getBytes(), fileName);
                 Product productImage = productRepository.readByNameId(uploadId);
-                productImage.setImageLink(request.getServerName() + "/ai-coffee-share-static-resources");
+                productImage.setImage(request.getServerName() + "/ai-coffee-share-static-resources");
                 productRepository.save(productImage);
                 jsonObject.addProperty("msg", "添加成功");
             } else if (type.equals("icon")) {
                 fileName = "icon_" + fileName;
                 FileUploader.uploadFile(file.getBytes(), fileName);
                 Product productIcon = productRepository.readByNameId(uploadId);
-                productIcon.setImageLink(request.getServerName() + "/ai-coffee-share-static-resources");
+                productIcon.setImage(request.getServerName() + "/ai-coffee-share-static-resources");
                 productRepository.save(productIcon);
                 jsonObject.addProperty("msg", "添加成功");
             } else if (type.equals("swipe")) {

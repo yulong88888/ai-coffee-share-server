@@ -26,6 +26,8 @@ public class ProjectController {
     @Value("${isDev}")
     private boolean isDev;
 
+    private String testData = "{\"city\": \"Hulunbeier\",\"country\": \"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKUWdGOkmDx69CW1Bic5kah8QmweWVW0nKMhwQVicA2tLyLloRKvWcXCvcZBZib99QAuHlRlicEYpS14A/132\",\"language\": \"zh_CN\",\"nickname\": \"布利啾啾迪布利多\uD83C\uDF42\",\"openid\": \"oEnMJwfEjxOJvEYqWqQ77fi5G1dc\",\"privilege\": \"__Array(0)\",\"length\": 0,\"province\": \"Inner Mongolia\",\"sex\": 1}";
+
     /**
      * 获取用户基本信息
      * 需要前端POST code过来
@@ -33,6 +35,10 @@ public class ProjectController {
     @ResponseBody
     @PostMapping("/getUserBaseInfo")
     public String weChatLogin(HttpServletRequest request) {
+        if (isDev) {
+            JsonObject testJson = new JsonParser().parse(testData).getAsJsonObject();
+            return new ReturnData(0, testJson).toString();
+        }
         String code = request.getParameter("code");
         //获取access_token
         String getAccessTokenByCodeLink = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
@@ -59,6 +65,11 @@ public class ProjectController {
         String userInfoLink = "https://api.weixin.qq.com/sns/userinfo?" +
                 "access_token=" + access_token + "&" +
                 "openid=" + openid;
+        //让用户登录
+        if (request.getSession().getAttribute(openid) == null) {
+            System.out.println("微信用户" + openid + "登录");
+            request.getSession().setAttribute(openid, openid);
+        }
         String userInfoLinkResult = HttpUtil.doGet(userInfoLink);
         JsonObject userInfoLinkJson = new JsonParser().parse(userInfoLinkResult).getAsJsonObject();
         System.out.println("====================================================================");
@@ -98,6 +109,7 @@ public class ProjectController {
                 if (request.getSession().getAttribute(state) != null) {
                     if (request.getSession().getAttribute(state).equals(state)) {
                         request.getSession().removeAttribute(state);
+                        System.out.println("===>>>" + request.getParameter("code"));
                         return "index";
                     }
                 }

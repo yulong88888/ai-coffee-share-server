@@ -1,9 +1,10 @@
 package net.lengmang.aicoffeeshareserver.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.lengmang.aicoffeeshareserver.bean.ReturnData;
-import net.lengmang.aicoffeeshareserver.bean.ReturnProduct;
 import net.lengmang.aicoffeeshareserver.sql.bean.Product;
 import net.lengmang.aicoffeeshareserver.sql.repository.ProductRepository;
 import net.lengmang.aicoffeeshareserver.utils.FileUploader;
@@ -44,8 +45,8 @@ public class ApiProductController {
             FileUploader.uploadFile(file.getBytes(), "image_" + fileName);
             FileUploader.uploadFile(file.getBytes(), "icon_" + fileName);
             String picLink = request.getServerName() + "/ai-coffee-share-static-resources/";
-            product.setIconLink(picLink + "icon_" + fileName);
-            product.setImageLink(picLink + "image_" + fileName);
+            product.setIcon(picLink + "icon_" + fileName);
+            product.setImage(picLink + "image_" + fileName);
             productRepository.save(product);
             jsonObject.addProperty("msg", "添加成功");
             //刷新内存数据
@@ -71,9 +72,9 @@ public class ApiProductController {
             //先根据设备NameID找到设备记录位置
             Product oldProduct = productRepository.readByNameId(product.getNameId());
             //读取icon和image图片的名称并删除他们
-            String iconPath = oldProduct.getIconLink();
+            String iconPath = oldProduct.getIcon();
             String needDelIconFile = iconPath.substring(iconPath.lastIndexOf("/"));
-            String imagePath = oldProduct.getImageLink();
+            String imagePath = oldProduct.getImage();
             String needDelImageFile = imagePath.substring(iconPath.lastIndexOf("/"));
             FileUploader.deleteFile(needDelIconFile);
             FileUploader.deleteFile(needDelImageFile);
@@ -83,8 +84,8 @@ public class ApiProductController {
             FileUploader.uploadFile(file.getBytes(), "image_" + fileName);
             FileUploader.uploadFile(file.getBytes(), "icon_" + fileName);
             String picLink = request.getServerName() + "/ai-coffee-share-static-resources/";
-            product.setIconLink(picLink + "icon_" + fileName);
-            product.setImageLink(picLink + "image_" + fileName);
+            product.setIcon(picLink + "icon_" + fileName);
+            product.setImage(picLink + "image_" + fileName);
             productRepository.save(product);
             jsonObject.addProperty("msg", "修改成功");
             //刷新内存数据
@@ -102,8 +103,10 @@ public class ApiProductController {
      */
     @ResponseBody
     @GetMapping(value = "/api/product/get")
-    public List<ReturnProduct> getProduct() {
-        return ProductsManager.getBetterProducts();
+    public String getProduct() {
+        String temp = new Gson().toJson(ProductsManager.getBetterProducts());
+        JsonArray jsonArray = new JsonParser().parse(temp).getAsJsonArray();
+        return new ReturnData(0, jsonArray).toString();
     }
 
     /**
@@ -116,33 +119,35 @@ public class ApiProductController {
         Product oldProduct = productRepository.readByNameId(product.getNameId());
         productRepository.deleteById(oldProduct.getId());
         jsonObject.addProperty("msg", "删除成功");
+        //刷新内存数据
+        ProductsManager.clearProducts();
         return new ReturnData(0, jsonObject).toString();
     }
 
-    /**
-     * Api路径
-     */
-    @ResponseBody
-    @PostMapping(value = "/api/product/add")
-    public String addProduct1(@RequestBody Product product) {
-        JsonObject jsonObject = new JsonObject();
-        try {
-            //获取产品数据
-            List<Product> products = ProductsManager.getProducts();
-            //对象中的equal方法方便给list的contains使用，没有比较ID
-            //判断新产品数据是否有重复
-            if (products.contains(product)) {
-                jsonObject.addProperty("msg", "已经添加过的产品");
-                return new ReturnData(1, jsonObject).toString();
-            }
-            productRepository.save(product);
-            jsonObject.addProperty("msg", "添加成功");
-            ProductsManager.clearProducts();
-            return new ReturnData(0, jsonObject).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            jsonObject.addProperty("msg", "服务器出错");
-            return new ReturnData(1, jsonObject).toString();
-        }
-    }
+//    /**
+//     * Api路径
+//     */
+//    @ResponseBody
+//    @PostMapping(value = "/api/product/add")
+//    public String addProduct1(@RequestBody Product product) {
+//        JsonObject jsonObject = new JsonObject();
+//        try {
+//            //获取产品数据
+//            List<Product> products = ProductsManager.getProducts();
+//            //对象中的equal方法方便给list的contains使用，没有比较ID
+//            //判断新产品数据是否有重复
+//            if (products.contains(product)) {
+//                jsonObject.addProperty("msg", "已经添加过的产品");
+//                return new ReturnData(1, jsonObject).toString();
+//            }
+//            productRepository.save(product);
+//            jsonObject.addProperty("msg", "添加成功");
+//            ProductsManager.clearProducts();
+//            return new ReturnData(0, jsonObject).toString();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            jsonObject.addProperty("msg", "服务器出错");
+//            return new ReturnData(1, jsonObject).toString();
+//        }
+//    }
 }
