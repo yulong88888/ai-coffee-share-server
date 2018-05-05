@@ -45,7 +45,7 @@ public class ApiProductController {
             fileName = product.getNameId() + fileName.substring(fileName.lastIndexOf("."));
             FileUploader.uploadFile(file.getBytes(), "image_" + fileName);
             FileUploader.uploadFile(file.getBytes(), "icon_" + fileName);
-            String picLink = "../" + request.getServerName() + "/ai-coffee-share-static-resources/";
+            String picLink = "http://" + request.getServerName() + "/ai-coffee-share-static-resources/";
             product.setIcon(picLink + "icon_" + fileName);
             product.setImage(picLink + "image_" + fileName);
             productRepository.save(product);
@@ -84,7 +84,7 @@ public class ApiProductController {
             fileName = product.getNameId() + fileName.substring(fileName.lastIndexOf("."));
             FileUploader.uploadFile(file.getBytes(), "image_" + fileName);
             FileUploader.uploadFile(file.getBytes(), "icon_" + fileName);
-            String picLink = "../" + request.getServerName() + "/ai-coffee-share-static-resources/";
+            String picLink = "http://" + request.getServerName() + "/ai-coffee-share-static-resources/";
             product.setIcon(picLink + "icon_" + fileName);
             product.setImage(picLink + "image_" + fileName);
             productRepository.save(product);
