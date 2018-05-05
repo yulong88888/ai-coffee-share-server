@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/product")
 public class ApiProductController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class ApiProductController {
      * 产品增加路径
      */
     @ResponseBody
-    @PostMapping(value = "/api/product/set")
+    @PostMapping("/set")
     public String setProduct(@RequestParam("file") MultipartFile file, @RequestParam("data") String productJsonStr, HttpServletRequest request) {
         JsonObject jsonObject = new JsonObject();
         try {
@@ -64,7 +65,7 @@ public class ApiProductController {
      * 产品修改路径
      */
     @ResponseBody
-    @PostMapping(value = "/api/product/update")
+    @PostMapping("/update")
     public String updateProduct(@RequestParam("file") MultipartFile file, @RequestParam("data") String productJsonStr, HttpServletRequest request) {
         JsonObject jsonObject = new JsonObject();
         try {
@@ -102,7 +103,7 @@ public class ApiProductController {
      * 查询产品路径
      */
     @ResponseBody
-    @GetMapping(value = "/api/product/get")
+    @GetMapping("/get")
     public String getProduct() {
         String temp = new Gson().toJson(ProductsManager.getBetterProducts());
         JsonArray jsonArray = new JsonParser().parse(temp).getAsJsonArray();
@@ -113,7 +114,7 @@ public class ApiProductController {
      * 删除产品
      */
     @ResponseBody
-    @PostMapping(value = "/api/product/delete")
+    @PostMapping("/delete")
     public String deleteProduct(@RequestBody Product product) {
         JsonObject jsonObject = new JsonObject();
         Product oldProduct = productRepository.readByNameId(product.getNameId());

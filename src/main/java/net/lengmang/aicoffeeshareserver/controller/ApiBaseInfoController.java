@@ -9,11 +9,10 @@ import net.lengmang.aicoffeeshareserver.sql.bean.BaseInfo;
 import net.lengmang.aicoffeeshareserver.sql.repository.BaseInfoRepository;
 import net.lengmang.aicoffeeshareserver.utils.BaseInfoManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/baseInfo")
 public class ApiBaseInfoController {
 
     @Autowired
@@ -23,7 +22,7 @@ public class ApiBaseInfoController {
      * 基础信息修改
      */
     @ResponseBody
-    @GetMapping(value = "/api/baseInfo/set")
+    @GetMapping("/set")
     public String setBaseInfo() {
         BaseInfo baseInfo = new BaseInfo();
         baseInfo.setId(1);
@@ -40,7 +39,7 @@ public class ApiBaseInfoController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/api/baseInfo/get")
+    @GetMapping("/get")
     public String getProduct() {
         BaseInfo baseInfo = baseInfoRepository.findAll().get(0);
         JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(baseInfo)).getAsJsonObject();
