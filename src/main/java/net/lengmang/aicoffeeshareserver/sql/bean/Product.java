@@ -19,10 +19,6 @@ public class Product {
     private String icon;
     private String image;
 
-    public Product() {
-
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Product) {
