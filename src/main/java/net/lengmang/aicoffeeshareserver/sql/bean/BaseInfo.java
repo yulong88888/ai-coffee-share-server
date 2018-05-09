@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 /**
  * 此类是商户基础数据
@@ -23,6 +24,7 @@ public class BaseInfo {
     private Integer id;
     private Integer minPrice;
     private Integer deliveryPrice;
+    @Lob
     private String imgDatas;
     private String adPic;
 
