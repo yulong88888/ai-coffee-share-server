@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -116,6 +117,17 @@ public class ApiBaseInfoController {
     @ResponseBody
     @GetMapping("/get")
     public String getProduct() {
+        //用于判断数据库是否需要初始化
+        List<BaseInfo> baseInfoList = baseInfoRepository.findAll();
+        if (baseInfoList.size() == 0) {
+            BaseInfo baseInfo = new BaseInfo();
+            baseInfo.setImgDatas(new JsonArray());
+            baseInfo.setMinPrice(0);
+            baseInfo.setDeliveryPrice(0);
+            baseInfo.setAdPic("");
+            baseInfo.setId(1);
+            baseInfoRepository.save(baseInfo);
+        }
         BaseInfo baseInfo = baseInfoRepository.findAll().get(0);
         JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(baseInfo)).getAsJsonObject();
         jsonObject.remove("imgDatas");
