@@ -1,14 +1,11 @@
 package net.lengmang.aicoffeeshareserver.utils;
 
-import net.lengmang.aicoffeeshareserver.bean.ReturnProduct;
 import net.lengmang.aicoffeeshareserver.sql.bean.BaseInfo;
-import net.lengmang.aicoffeeshareserver.sql.bean.Product;
 import net.lengmang.aicoffeeshareserver.sql.repository.BaseInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
