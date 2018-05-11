@@ -35,6 +35,6 @@ public class WeChatController {
     public String WeChatData(@RequestBody String xml) {
         System.out.println("（づ￣3￣）づ╭❤～");
         System.out.println(xml);
-        return "0.0";
+        return WeChatEvent.doEverything(xml);
     }
 }
