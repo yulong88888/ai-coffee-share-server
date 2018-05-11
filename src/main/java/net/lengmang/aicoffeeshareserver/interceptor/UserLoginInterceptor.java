@@ -1,4 +1,4 @@
-package net.lengmang.aicoffeeshareserver.utils;
+package net.lengmang.aicoffeeshareserver.interceptor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

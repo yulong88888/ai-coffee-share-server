@@ -1,6 +1,7 @@
 package net.lengmang.aicoffeeshareserver;
 
-import net.lengmang.aicoffeeshareserver.utils.UserLoginInterceptor;
+import net.lengmang.aicoffeeshareserver.interceptor.AdminLoginInterceptor;
+import net.lengmang.aicoffeeshareserver.interceptor.UserLoginInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ public class AiCoffeeShareServerApplication {
             super.addInterceptors(registry);
             //校验对API数据库操作用户的登录状态
             registry.addInterceptor(new UserLoginInterceptor()).addPathPatterns("/api/**");
+            registry.addInterceptor(new AdminLoginInterceptor()).addPathPatterns("/api/admin/**");
         }
     }
 }

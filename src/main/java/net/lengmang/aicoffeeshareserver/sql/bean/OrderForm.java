@@ -1,5 +1,7 @@
 package net.lengmang.aicoffeeshareserver.sql.bean;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
@@ -35,7 +37,8 @@ public class OrderForm {
     //{"productId":"id","productName":"***","productCount":"","productPrice":""}
     @Lob
     private String orderInfo;
-    private String total;
+    private double total;
+    private String msg;
     @CreationTimestamp
     private Timestamp time;
 
@@ -75,23 +78,23 @@ public class OrderForm {
         return accountInfo;
     }
 
-    public void setAccountInfo(String accountInfo) {
-        this.accountInfo = accountInfo;
+    public void setAccountInfo(JsonObject accountInfo) {
+        this.accountInfo = accountInfo.toString();
     }
 
     public String getOrderInfo() {
         return orderInfo;
     }
 
-    public void setOrderInfo(String orderInfo) {
-        this.orderInfo = orderInfo;
+    public void setOrderInfo(JsonArray orderInfo) {
+        this.orderInfo = orderInfo.toString();
     }
 
-    public String getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
@@ -101,5 +104,13 @@ public class OrderForm {
 
     public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

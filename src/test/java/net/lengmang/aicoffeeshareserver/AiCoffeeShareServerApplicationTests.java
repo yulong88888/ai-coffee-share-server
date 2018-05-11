@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -27,7 +28,7 @@ public class AiCoffeeShareServerApplicationTests {
 //
 //    @Test
 //    public void UUID() {
-//        System.out.println(UUID.randomUUID().toString().replaceAll("-", ""));
+//        System.out.println(new Date().getTime() + "-" + UUID.randomUUID().toString().replaceAll("-", ""));
 //    }
 //
 //    @Autowired
