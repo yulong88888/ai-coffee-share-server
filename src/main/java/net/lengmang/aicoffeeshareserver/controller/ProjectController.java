@@ -66,9 +66,9 @@ public class ProjectController {
                 "access_token=" + access_token + "&" +
                 "openid=" + openid;
         //让用户登录
-        if (request.getSession().getAttribute(openid) == null) {
+        if (request.getSession().getAttribute("openId") == null) {
             System.out.println("微信用户" + openid + "登录");
-            request.getSession().setAttribute(openid, openid);
+            request.getSession().setAttribute("openId", openid);
         }
         String userInfoLinkResult = HttpUtil.doGet(userInfoLink);
         JsonObject userInfoLinkJson = new JsonParser().parse(userInfoLinkResult).getAsJsonObject();
