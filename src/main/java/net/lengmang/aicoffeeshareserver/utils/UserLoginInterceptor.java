@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Enumeration;
@@ -35,24 +36,39 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             return true;
         }
         System.out.println("preHandle被调用");
-        Enumeration<String> enumeration = request.getParameterNames();
-        if (enumeration.hasMoreElements()) {
-            String openId = request.getParameter("openId");
-            if (openId != null || !openId.equals("")) {
-                if (!request.getSession().getAttribute(openId).equals(openId)) {
-                    String link = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
-                            "appid=" + appId + "&" +
-                            "redirect_uri=" + URLEncoder.encode(request.getRequestURL().toString(), "utf-8") + "&" +
-                            "response_type=code&" +
-                            "scope=snsapi_userinfo&" +
-                            "#wechat_redirect";
-                    response.sendRedirect(link);
-                    return false;
-                }
-                return true;
-            }
+        HttpSession session = request.getSession();
+//        if (session.getAttribute("openId").equals("") || session.getAttribute("openId") == null) {
+        if (session == null) {
+            String link = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                    "appid=" + appId + "&" +
+                    "redirect_uri=" + URLEncoder.encode(request.getRequestURL().toString(), "utf-8") + "&" +
+                    "response_type=code&" +
+                    "scope=snsapi_userinfo&" +
+                    "#wechat_redirect";
+            response.sendRedirect(link);
+            return false;
+        } else {
+            return true;
         }
-        return false;
+
+//        Enumeration<String> enumeration = request.getParameterNames();
+//        if (enumeration.hasMoreElements()) {
+//            String openId = request.getParameter("openId");
+//            if (openId != null || !openId.equals("")) {
+//                if (!request.getSession().getAttribute(openId).equals(openId)) {
+//                    String link = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+//                            "appid=" + appId + "&" +
+//                            "redirect_uri=" + URLEncoder.encode(request.getRequestURL().toString(), "utf-8") + "&" +
+//                            "response_type=code&" +
+//                            "scope=snsapi_userinfo&" +
+//                            "#wechat_redirect";
+//                    response.sendRedirect(link);
+//                    return false;
+//                }
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     @Override
