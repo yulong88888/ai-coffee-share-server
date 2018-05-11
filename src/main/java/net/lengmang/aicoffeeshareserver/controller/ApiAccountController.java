@@ -100,9 +100,10 @@ public class ApiAccountController {
      */
     @ResponseBody
     @PostMapping("/getAccountInfo")
-    public String getAccountInfo() {
+    public String getAccountInfo(HttpServletRequest request) {
         try {
-            Account account = accountRepository.findAll().get(0);
+            String openId = request.getSession().getAttribute("openId").toString();
+            Account account = accountRepository.readByOpenId(openId);
             return new ReturnData(0, new JsonParser().parse(account.getAccountInfo()).getAsJsonArray()).toString();
         } catch (Exception e) {
             e.printStackTrace();
