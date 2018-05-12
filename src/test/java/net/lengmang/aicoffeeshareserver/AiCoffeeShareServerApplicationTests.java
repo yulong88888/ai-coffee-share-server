@@ -25,7 +25,8 @@ public class AiCoffeeShareServerApplicationTests {
     @Test
     public void contextLoads() {
     }
-//
+
+    //
 //    @Test
 //    public void UUID() {
 //        System.out.println(new Date().getTime() + "-" + UUID.randomUUID().toString().replaceAll("-", ""));
@@ -46,9 +47,9 @@ public class AiCoffeeShareServerApplicationTests {
 //        }
 //        Product oldProduct = productRepository.readByNameId("1525487613802");
 //        if (oldProduct == null) {
-//            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+//            System.out.println("FUCK");
 //        } else {
-//            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
+//            System.out.println(oldProduct.getPrice());
 //        }
 //    }
 //

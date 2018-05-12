@@ -1,9 +1,6 @@
 package net.lengmang.aicoffeeshareserver.controller;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import net.lengmang.aicoffeeshareserver.bean.ReturnData;
 import net.lengmang.aicoffeeshareserver.sql.bean.Account;
 import net.lengmang.aicoffeeshareserver.sql.bean.OrderForm;
@@ -65,8 +62,8 @@ public class ApiOrderController {
             String openId = request.getSession().getAttribute("openId").toString();
             System.out.println(openId);
             System.out.println(json.toString());
-            JsonObject accountInfoJsonObject = new JsonParser().parse(json.get("accountInfo").toString()).getAsJsonObject();
-            JsonArray orderInfoJsonArray = new JsonParser().parse(json.get("orderInfo").toString()).getAsJsonArray();
+            JsonObject accountInfoJsonObject = new JsonParser().parse(new Gson().toJson(json.get("accountInfo"))).getAsJsonObject();
+            JsonArray orderInfoJsonArray = new JsonParser().parse(new Gson().toJson(json.get("orderInfo"))).getAsJsonArray();
             String msg = json.get("msg").toString();
             if (orderInfoJsonArray.size() == 0) {
                 jsonObject.addProperty("msg", "没有购买任何东西");
@@ -81,9 +78,10 @@ public class ApiOrderController {
             double total = 0;
             for (JsonElement jsonEle : orderInfoJsonArray) {
                 JsonObject jsonObj = jsonEle.getAsJsonObject();
-                String productId = jsonObj.get("productId").toString();
-                double price = productRepository.readByNameId(productId).getPrice();
-                int productCount = jsonObj.get("productCount").getAsInt();
+                System.out.println("===>>>" + jsonObj);
+                String nameId = jsonObj.get("nameId").getAsString();
+                double price = productRepository.readByNameId(nameId).getPrice();
+                int productCount = jsonObj.get("count").getAsInt();
                 total += productCount * price;
             }
             orderForm.setTotal(total);
