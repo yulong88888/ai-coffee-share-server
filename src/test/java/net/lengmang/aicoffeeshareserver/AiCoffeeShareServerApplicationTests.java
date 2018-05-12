@@ -2,10 +2,12 @@ package net.lengmang.aicoffeeshareserver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import net.lengmang.aicoffeeshareserver.controller.WeChatPushTemplate;
 import net.lengmang.aicoffeeshareserver.sql.bean.Account;
 import net.lengmang.aicoffeeshareserver.sql.bean.Product;
 import net.lengmang.aicoffeeshareserver.sql.repository.AccountRepository;
 import net.lengmang.aicoffeeshareserver.sql.repository.ProductRepository;
+import net.lengmang.aicoffeeshareserver.utils.AccessTokenManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +66,11 @@ public class AiCoffeeShareServerApplicationTests {
 //        //String str = "[{\"id\":74,\"name\":\"测试产品\",\"nameId\":\"1525487613802\",\"item\":\"测试产品\",\"price\":6.6,\"description\":\"测试产品\",\"info\":\"测试产品\",\"icon\":\"http://localhost/ai-coffee-share-static-resources/icon_1525487613802.jpg\",\"image\":\"http://localhost/ai-coffee-share-static-resources/image_1525487613802.jpg\",\"count\":2}]";
 //        JsonArray array = new JsonParser().parse(temp).getAsJsonArray();
 //        System.out.println(array);
+//    }
+//
+//    @Test
+//    public void test() {
+//        //WeChatPushTemplate.pushOrder("oEnMJwfEjxOJvEYqWqQ77fi5G1dc", "1", 0, "www.lengmang.net");
+//        //System.out.println(AccessTokenManager.getAccessToken().getAccess_token());
 //    }
 }

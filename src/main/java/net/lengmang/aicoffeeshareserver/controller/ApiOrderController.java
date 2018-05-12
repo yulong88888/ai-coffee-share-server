@@ -71,7 +71,8 @@ public class ApiOrderController {
             }
             OrderForm orderForm = new OrderForm();
             orderForm.setOpenId(openId);
-            orderForm.setOrderId(new Date().getTime() + "-" + UUID.randomUUID().toString().replaceAll("-", ""));
+            String orderId = new Date().getTime() + "-" + UUID.randomUUID().toString().replaceAll("-", "");
+            orderForm.setOrderId(orderId);
             orderForm.setState("0");
             orderForm.setAccountInfo(accountInfoJsonObject);
             orderForm.setOrderInfo(orderInfoJsonArray);
@@ -87,6 +88,7 @@ public class ApiOrderController {
             orderForm.setTotal(total);
             orderForm.setMsg(msg);
             orderFormRepository.save(orderForm);
+            WeChatPushTemplate.pushOrder(openId, orderId, total, request.getServerName() + request.getContextPath());
             jsonObject.addProperty("msg", "下单成功");
             return new ReturnData(0, jsonObject).toString();
         } catch (Exception e) {
