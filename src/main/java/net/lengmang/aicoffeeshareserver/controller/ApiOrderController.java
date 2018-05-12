@@ -12,6 +12,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,7 @@ public class ApiOrderController {
                 int productCount = jsonObj.get("count").getAsInt();
                 total += productCount * price;
             }
+            total = Double.parseDouble(new DecimalFormat("#.00").format(total));
             orderForm.setTotal(total);
             orderForm.setMsg(msg);
             orderFormRepository.save(orderForm);
