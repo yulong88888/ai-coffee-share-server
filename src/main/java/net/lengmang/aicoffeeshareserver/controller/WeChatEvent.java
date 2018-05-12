@@ -80,6 +80,11 @@ public class WeChatEvent {
                             break;
                     }
                     break;
+                case "text":
+                    String text = rootElt.element("Content").getText();
+                    return_root.addElement("MsgType").addCDATA("text");
+                    return_root.addElement("Content").addCDATA("您说的" + text + "我还不懂，我会努力学习的");
+                    break;
             }
             // 设置XML文档格式
             OutputFormat outputFormat = OutputFormat.createPrettyPrint();
